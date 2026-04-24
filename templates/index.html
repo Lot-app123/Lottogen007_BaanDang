@@ -102,7 +102,8 @@ header {
 .app {
   display: grid;
   grid-template-columns: 1fr 400px 72px; /* สัดส่วน Desktop */
-  height: calc(100vh - var(--header-h));
+  /* ใช้ dvh เพื่อป้องกันปัญหาแถบ URL บังด้านล่างในเบราว์เซอร์มือถือ/แท็บเล็ต */
+  height: calc(100dvh - var(--header-h)); 
   overflow: hidden;
 }
 
@@ -275,7 +276,8 @@ header {
   
   .set-tab { width: auto; min-width: 64px; padding: 6px 16px; font-size: 12px; border-radius: 20px; white-space: nowrap; }
   
-  .panel { grid-column: 2 / 3; grid-row: 2 / 3; border-top: none; }
+  /* เพิ่ม min-height: 0 เพื่อแก้ปัญหาปุ่มสร้างรูปภาพทะลุขอบจอบน iPad */
+  .panel { grid-column: 2 / 3; grid-row: 2 / 3; border-top: none; min-height: 0; }
   .preview-content { padding: 16px; }
 }
 
