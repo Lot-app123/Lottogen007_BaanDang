@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LOTTO GEN — สร้างเลขหวย</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:          #0a0b0f;
+  --surface:     #111318;
+  --surface-2:   #181b22;
+  --border:      #1f2330;
+  --border-2:    #2a2f40;
+  --text:        #e8eaf0;
+  --muted:       #5a607a;
+  --muted-2:     #3d4257;
+  --gold:        #f0c040;
+  --gold-dim:    #7a601a;
+  --gold-glow:   rgba(240,192,64,.18);
+  --green:       #2ecc8a;
+  --red:         #ff4d6a;
+  --accent:      #4f7fff;
+  --radius:      10px;
+  --header-h:    56px;
+}
+
+body {
+  font-family: 'Kanit', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 2px; }
+
+/* ─── Header ─────────────────────────────────────────────────── */
+header {
+  height: var(--header-h);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 14px;
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.logo-icon {
+  width: 28px; height: 28px;
+  background: var(--gold);
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: #0a0b0f;
+  letter-spacing: -.5px;
+  flex-shrink: 0;
+}
+.logo-text {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: .5px;
+}
+.logo-text span { color: var(--gold); }
+
+.header-sep {
+  width: 1px; height: 22px;
+  background: var(--border);
+  margin: 0 4px;
+}
+
+.header-clock {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.header-clock .date-pill {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+  padding: 3px 10px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+}
+.header-clock .time-pill {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gold);
+  padding: 3px 10px;
+  background: var(--gold-glow);
+  border: 1px solid var(--gold-dim);
+  border-radius: 20px;
+  letter-spacing: .5px;
+}
+
+.header-user {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.user-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.user-avatar {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  border: 1px solid var(--border-2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gold);
+}
+.logout-btn {
+  font-family: 'Kanit', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 5px 12px;
+  border: 1px solid var(--border-2);
+  border-radius: 6px;
+  transition: color .15s, border-color .15s, background .15s;
+}
+.logout-btn:hover { color: var(--red); border-color: var(--red); background: rgba(255,77,106,.06); }
+
+/* ─── Layout ──────────────────────────────────────────────────── */
+.app {
+  display: grid;
+  grid-template-columns: 1fr 400px 72px;
+  height: calc(100vh - var(--header-h));
+  overflow: hidden;
+}
+
+/* ─── Left: Preview ──────────────────────────────────────────── */
+.preview-area {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-right: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.preview-tabs-bar {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  background: var(--surface);
+  overflow-x: auto;
+}
+.image-tab {
+  padding: 14px 14px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  transition: color .15s;
+  user-select: none;
+  position: relative;
+  top: 1px;
+  letter-spacing: .2px;
+}
+.image-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+.image-tab:hover:not(.active) { color: var(--text); }
+
+.preview-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  overflow: hidden;
+  position: relative;
+}
+.preview-content::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 60% at 30% 40%, rgba(240,192,64,.04) 0%, transparent 70%),
+    repeating-linear-gradient(0deg, transparent, transparent 39px, var(--border) 39px, var(--border) 40px),
+    repeating-linear-gradient(90deg, transparent, transparent 39px, var(--border) 39px, var(--border) 40px);
+  opacity: .5;
+  pointer-events: none;
+}
+.preview-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 10px;
+  box-shadow: 0 8px 40px rgba(0,0,0,.6), 0 0 0 1px var(--border);
+  position: relative;
+  z-index: 1;
+  animation: fadeIn .3s ease;
+}
+@keyframes fadeIn { from { opacity: 0; transform: scale(.97); } to { opacity: 1; transform: scale(1); } }
+
+.preview-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  color: var(--muted-2);
+  font-size: 14px;
+  position: relative;
+  z-index: 1;
+}
+.preview-placeholder .ph-icon {
+  width: 64px; height: 64px;
+  border-radius: 16px;
+  background: var(--surface);
+  border: 1px dashed var(--border-2);
+  display: flex; align-items: center; justify-content: center;
+}
+.preview-placeholder svg { width: 28px; height: 28px; opacity: .3; }
+.preview-placeholder p { font-size: 13px; color: var(--muted-2); }
+
+/* ─── Middle: Panel ──────────────────────────────────────────── */
+.panel {
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.panel-header {
+  padding: 14px 16px 0;
+  flex-shrink: 0;
+}
+.panel-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.panel-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: .3px;
+}
+.selected-badge {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  background: var(--bg);
+  padding: 3px 9px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+}
+
+/* search */
+.search-wrap {
+  position: relative;
+  margin-bottom: 10px;
+}
+.search-wrap input {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 7px 12px 7px 32px;
+  font-family: 'Kanit', sans-serif;
+  font-size: 13px;
+  color: var(--text);
+  outline: none;
+  transition: border-color .15s;
+}
+.search-wrap input::placeholder { color: var(--muted-2); }
+.search-wrap input:focus { border-color: var(--border-2); }
+.search-icon {
+  position: absolute;
+  left: 10px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted-2);
+  pointer-events: none;
+}
+
+.panel-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 2px 0 8px;
+}
+
+/* ─── Lottery row ────────────────────────────────────────────── */
+.lottery-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 16px;
+  cursor: pointer;
+  transition: background .1s;
+  border-left: 2px solid transparent;
+}
+.lottery-row:hover { background: var(--surface-2); }
+.lottery-row.checked {
+  background: rgba(240,192,64,.06);
+  border-left-color: var(--gold-dim);
+}
+
+.cb-wrap {
+  width: 16px; height: 16px;
+  flex-shrink: 0;
+  position: relative;
+}
+.cb-wrap input {
+  position: absolute; opacity: 0; width: 100%; height: 100%; cursor: pointer; margin: 0;
+}
+.cb-box {
+  width: 16px; height: 16px;
+  border: 1.5px solid var(--border-2);
+  border-radius: 4px;
+  background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color .15s, background .15s;
+  pointer-events: none;
+}
+.cb-wrap input:checked ~ .cb-box {
+  background: var(--gold);
+  border-color: var(--gold);
+}
+.cb-box svg { display: none; }
+.cb-wrap input:checked ~ .cb-box svg { display: block; }
+
+.row-label {
+  flex: 1;
+  font-size: 13.5px;
+  font-weight: 400;
+  color: var(--text);
+  user-select: none;
+}
+.lottery-row.checked .row-label { color: var(--gold); font-weight: 500; }
+
+.row-time {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  background: var(--bg);
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+}
+
+/* ─── Panel footer ───────────────────────────────────────────── */
+.panel-footer {
+  flex-shrink: 0;
+  padding: 10px 16px 14px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.select-all-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+.select-all-label {
+  font-size: 12px;
+  color: var(--muted);
+  user-select: none;
+}
+
+.btn-generate {
+  margin-left: auto;
+  font-family: 'Kanit', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--bg);
+  background: var(--muted-2);
+  border: none;
+  border-radius: 8px;
+  padding: 8px 18px;
+  cursor: not-allowed;
+  transition: background .2s, box-shadow .2s, transform .1s;
+  letter-spacing: .3px;
+  white-space: nowrap;
+}
+.btn-generate.ready {
+  background: var(--gold);
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(240,192,64,.3);
+}
+.btn-generate.ready:hover {
+  background: #f5cc55;
+  box-shadow: 0 0 28px rgba(240,192,64,.45);
+}
+.btn-generate.ready:active { transform: scale(.97); }
+
+/* ─── Right: Set tabs ────────────────────────────────────────── */
+.set-tabs {
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 14px 0;
+  gap: 6px;
+  overflow-y: auto;
+}
+.set-tab {
+  width: 52px;
+  padding: 10px 4px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  text-align: center;
+  border: 1px solid transparent;
+  transition: color .15s, border-color .15s, background .15s;
+  line-height: 1.4;
+  letter-spacing: .2px;
+  user-select: none;
+}
+.set-tab:hover { color: var(--text); background: var(--surface-2); }
+.set-tab.active {
+  color: var(--gold);
+  border-color: var(--gold-dim);
+  background: var(--gold-glow);
+}
+
+/* ─── Loading overlay ────────────────────────────────────────── */
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10,11,15,.85);
+  backdrop-filter: blur(6px);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  z-index: 100;
+}
+.loading-overlay.show { display: flex; }
+
+.spinner-ring {
+  width: 52px; height: 52px;
+  position: relative;
+}
+.spinner-ring::before, .spinner-ring::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid transparent;
+}
+.spinner-ring::before {
+  inset: 0;
+  border-top-color: var(--gold);
+  animation: spin 1s linear infinite;
+}
+.spinner-ring::after {
+  inset: 6px;
+  border-top-color: rgba(240,192,64,.3);
+  animation: spin .7s linear infinite reverse;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.loading-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted);
+  letter-spacing: .5px;
+}
+.loading-text span { color: var(--gold); }
+
+/* ─── Empty state ────────────────────────────────────────────── */
+.empty-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 120px;
+  color: var(--muted-2);
+  font-size: 13px;
+  gap: 6px;
+}
+
+/* ─── Highlight search match ─────────────────────────────────── */
+.match { color: var(--gold); }
+</style>
+</head>
+<body>
+
+<!-- ── Header ─────────────────────────────────────────────────── -->
+<header>
+  <div class="logo">
+    <div class="logo-icon">L</div>
+    <span class="logo-text">LOTTO<span>GEN</span></span>
+  </div>
+  <div class="header-sep"></div>
+  <div class="header-clock">
+    <span class="date-pill" id="date-display">—</span>
+    <span class="time-pill" id="time-display">—:—:—</span>
+  </div>
+  <div class="header-user">
+    <div class="user-badge">
+      <div class="user-avatar">{{ user[0]|upper }}</div>
+      <span style="font-size:13px;color:var(--muted)">{{ user }}</span>
+    </div>
+    <div class="header-sep"></div>
+    <a href="/logout" class="logout-btn">ออกจากระบบ</a>
+  </div>
+</header>
+
+<!-- ── Main ───────────────────────────────────────────────────── -->
+<form method="POST" id="main-form">
+<div class="app">
+
+  <!-- Left: Image preview -->
+  <div class="preview-area">
+    <div class="preview-tabs-bar" id="image-tabs">
+      <div class="image-tab active">ตัวอย่าง</div>
+    </div>
+    <div class="preview-content">
+      <img src="/static/Baan.jpg" class="preview-img" id="preview-img" style="display:block">
+      <div class="preview-placeholder" id="preview-placeholder" style="display:none">
+        <div class="ph-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="3" y="3" width="18" height="18" rx="3"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <path d="M21 15l-5-5L5 21"/>
+          </svg>
+        </div>
+        <p>เลือกประเภทหวยแล้วกด <strong style="color:var(--gold)">สร้างรูปภาพ</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Middle: Lottery list -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-title-row">
+        <span class="panel-title">รายการหวย</span>
+        <span class="selected-badge" id="selected-count">เลือก 0 / 0</span>
+      </div>
+      <div class="search-wrap">
+        <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input type="text" id="search-input" placeholder="ค้นหาหวย..." oninput="renderList()">
+      </div>
+    </div>
+    <div class="panel-list" id="panel-list"></div>
+    <div class="panel-footer">
+      <label class="select-all-wrap">
+        <div class="cb-wrap">
+          <input type="checkbox" id="select-all-cb" onchange="toggleAll(this.checked)">
+          <div class="cb-box">
+            <svg width="9" height="7" viewBox="0 0 10 8" fill="none">
+              <path d="M1 4l3 3 5-6" stroke="#0a0b0f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+        <span class="select-all-label">เลือกทั้งหมด</span>
+      </label>
+      <button type="submit" class="btn-generate" id="btn-gen" disabled>สร้างรูปภาพ</button>
+    </div>
+  </div>
+
+  <!-- Right: Set tabs -->
+  <div class="set-tabs" id="set-tabs">
+    <div class="set-tab active" data-set="0" onclick="switchSet(0)">SET<br>1</div>
+    <div class="set-tab" data-set="1" onclick="switchSet(1)">SET<br>2</div>
+    <div class="set-tab" data-set="2" onclick="switchSet(2)">ส-อ</div>
+  </div>
+
+</div>
+</form>
+
+<!-- ── Loading overlay ────────────────────────────────────────── -->
+<div class="loading-overlay" id="loading">
+  <div class="spinner-ring"></div>
+  <div class="loading-text">กำลังสร้าง <span>รูปภาพ</span>...</div>
+</div>
+
+<script>
+// ─── Data ─────────────────────────────────────────────────────
+const SETS = [
+  {
+    label: 'SET 1',
+    items: [
+      { name: 'ลาว EXTRA',          time: '08:25' },
+      { name: 'นิเคอิเช้า VIP',      time: '09:00' },
+      { name: 'ฮานอยอาเซียน',        time: '09:10' },
+      { name: 'นิเคอิเช้า',          time: '09:25' },
+      { name: 'จีนเช้า VIP',         time: '10:00' },
+      { name: 'จีนเช้า',             time: '10:20' },
+      { name: 'ลาว TV',              time: '10:25' },
+      { name: 'ฮั่งเส็งเช้า VIP',    time: '10:30' },
+      { name: 'ฮั่งเส็งเช้า',        time: '10:55' },
+      { name: 'ฮานอย HD',            time: '11:10' },
+      { name: 'ไต้หวัน VIP',         time: '11:30' },
+      { name: 'ลาวพิเศษรอบเที่ยง',   time: '11:30' },
+      { name: 'ไต้หวัน',             time: '12:00' },
+      { name: 'ฮานอยสตาร์',          time: '12:30' },
+      { name: 'เกาหลี VIP',          time: '12:30' },
+      { name: 'เกาหลี',              time: '13:00' },
+      { name: 'นิเคอิบ่าย',          time: '13:30' },
+      { name: 'นิเคอิบ่าย VIP',      time: '13:30' },
+      { name: 'ลาว HD',              time: '14:00' },
+      { name: 'จีนบ่าย',             time: '14:00' },
+      { name: 'ฮานอย TV',            time: '14:30' },
+      { name: 'จีนบ่าย VIP',         time: '14:45' },
+      { name: 'ฮั่งเส็งบ่าย',        time: '15:00' },
+      { name: 'ฮั่งเส็งบ่าย VIP',    time: '15:00' },
+      { name: 'ลาวสตาร์',            time: '15:00' },
+      { name: 'ไทยเย็น',             time: '15:00' },
+      { name: 'สิงคโปร์',            time: '16:00' },
+      { name: 'ฮานอยกาชาด',          time: '16:00' },
+      { name: 'สิงคโปร์ VIP',        time: '16:30' },
+      { name: 'ฮานอยพิเศษ',          time: '16:30' },
+      { name: 'ฮานอยสามัคคี',        time: '17:00' },
+      { name: 'อินเดีย',             time: '17:00' },
+      { name: 'ฮานอยปกติ',           time: '18:00' },
+      { name: 'มาเลย์',              time: '18:00' },
+      { name: 'อียิปต์',             time: '19:00' },
+      { name: 'ฮานอย VIP',           time: '19:00' },
+      { name: 'ฮานอยพัฒนา',          time: '19:30' },
+      { name: 'ลาวสามัคคี',          time: '20:00' },
+      { name: 'ลาวพัฒนา',            time: '20:30' },
+      { name: 'ลาวอาเซียน',          time: '21:00' },
+      { name: 'ลาว VIP',             time: '21:00' },
+      { name: 'ลาวสามัคคี VIP',      time: '21:30' },
+      { name: 'ลาว STAR VIP',        time: '21:30' },
+      { name: 'อังกฤษ VIP',          time: '22:00' },
+      { name: 'ฮานอย EXTRA',         time: '22:30' },
+      { name: 'รัสเซีย',             time: '22:30' },
+      { name: 'เยอรมัน VIP',         time: '22:30' },
+      { name: 'อังกฤษ',              time: '23:00' },
+      { name: 'เยอรมัน',             time: '23:00' },
+      { name: 'ลาวกาชาด',            time: '23:00' },
+      { name: 'ยูโร',                time: '23:30' },
+      { name: 'รัสเซีย VIP',         time: '23:30' },
+      { name: 'ดาวโจนส์',            time: '04:00' },
+      { name: 'ดาวโจนส์ VIP',        time: '04:00' },
+      { name: 'ดาวโจนส์ STAR',       time: '04:30' },
+    ]
+  },
+  {
+    label: 'SET 2',
+    items: [
+      { name: 'ธกส',       time: '' },
+      { name: 'ออมสิน',    time: '' },
+      { name: 'ไทย',       time: '' },
+      { name: 'รัฐบาลไทย', time: '' },
+    ]
+  },
+  {
+    label: 'เสาร์-อาทิตย์',
+    items: [
+      { name: 'หวยดาวโจนส์ VIP',        time: '04:00' },
+      { name: 'หวยดาวโจนส์ STAR',       time: '04:30' },
+      { name: 'หวยลาว Extra',            time: '08:25' },
+      { name: 'นิเคอิ(เช้า) VIP',        time: '09:00' },
+      { name: 'ฮานอยอาเซียน',            time: '09:10' },
+      { name: 'จีน(เช้า) VIP',           time: '10:00' },
+      { name: 'หวยลาว TV',               time: '10:25' },
+      { name: 'ฮั่งเส็ง(เช้า) VIP',      time: '10:30' },
+      { name: 'ฮานอย HD',                time: '11:10' },
+      { name: 'ไต้หวัน VIP',             time: '11:30' },
+      { name: 'ฮานอยสตาร์',              time: '12:30' },
+      { name: 'เกาหลี VIP',              time: '12:30' },
+      { name: 'นิเคอิ(บ่าย) VIP',        time: '13:30' },
+      { name: 'หวยลาว HD',               time: '14:00' },
+      { name: 'หวยฮานอย TV',             time: '14:30' },
+      { name: 'จีน(บ่าย) VIP',           time: '14:45' },
+      { name: 'ฮั่งเส็ง(บ่าย) VIP',      time: '15:00' },
+      { name: 'หวยลาวสตาร์',             time: '15:00' },
+      { name: 'หวยฮานอยกาชาด',           time: '16:00' },
+      { name: 'สิงคโปร์ VIP',            time: '16:30' },
+      { name: 'ฮานอยสามัคคี',            time: '17:00' },
+      { name: 'ฮานอยพิเศษ',              time: '16:30' },
+      { name: 'หวยมาเลย์',               time: '18:00' },
+      { name: 'หวยฮานอย',                time: '18:00' },
+      { name: 'ฮานอยพัฒนา',              time: '19:30' },
+      { name: 'หวยฮานอย VIP',            time: '19:00' },
+      { name: 'หวยลาวสามัคคี',           time: '20:00' },
+      { name: 'ลาวอาเซียน',              time: '21:00' },
+      { name: 'หวยลาว VIP',              time: '21:00' },
+      { name: 'หวยลาวสามัคคี VIP',       time: '21:30' },
+      { name: 'หวยลาว STAR VIP',         time: '21:30' },
+      { name: 'อังกฤษ VIP',              time: '22:00' },
+      { name: 'หวยฮานอย Extra',          time: '22:30' },
+      { name: 'ฮานอยดึก',               time: '23:00' },
+      { name: 'เยอรมัน VIP',             time: '22:30' },
+      { name: 'ยูโร',                    time: '23:30' },
+      { name: 'หวยลาวกาขาด',             time: '23:00' },
+      { name: 'รัสเซีย VIP',             time: '23:30' },
+    ]
+  }
+];
+
+// ─── State ────────────────────────────────────────────────────
+let currentSet = 0;
+const selected = new Set();
+
+// ─── Clock ────────────────────────────────────────────────────
+function updateClock() {
+  const now = new Date();
+  const opts = { timeZone: 'Asia/Bangkok', hour12: false };
+  const date = now.toLocaleDateString('th-TH', { ...opts, day:'2-digit', month:'2-digit', year:'2-digit' });
+  const time = now.toLocaleTimeString('th-TH', { ...opts, hour:'2-digit', minute:'2-digit', second:'2-digit' });
+  document.getElementById('date-display').textContent = date;
+  document.getElementById('time-display').textContent = time;
+}
+updateClock();
+setInterval(updateClock, 1000);
+
+// ─── Highlight search match ───────────────────────────────────
+function highlight(text, query) {
+  if (!query) return text;
+  const idx = text.toLowerCase().indexOf(query.toLowerCase());
+  if (idx === -1) return text;
+  return text.slice(0, idx) + `<span class="match">${text.slice(idx, idx + query.length)}</span>` + text.slice(idx + query.length);
+}
+
+// ─── Render list ──────────────────────────────────────────────
+function renderList() {
+  const list = document.getElementById('panel-list');
+  const setData = SETS[currentSet];
+  const q = document.getElementById('search-input').value.trim();
+  list.innerHTML = '';
+
+  const filtered = q
+    ? setData.items.filter(i => i.name.toLowerCase().includes(q.toLowerCase()))
+    : setData.items;
+
+  if (filtered.length === 0) {
+    list.innerHTML = `<div class="empty-list">ไม่พบรายการที่ค้นหา</div>`;
+    updateUI();
+    return;
+  }
+
+  filtered.forEach(item => {
+    const key = `${currentSet}:${item.name}`;
+    const isChecked = selected.has(key);
+
+    const row = document.createElement('label');
+    row.className = 'lottery-row' + (isChecked ? ' checked' : '');
+    row.innerHTML = `
+      <div class="cb-wrap">
+        <input type="checkbox" name="lottery_type" value="${item.name}"${isChecked ? ' checked' : ''}>
+        <div class="cb-box">
+          <svg width="9" height="7" viewBox="0 0 10 8" fill="none">
+            <path d="M1 4l3 3 5-6" stroke="#0a0b0f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+      <span class="row-label">${highlight(item.name, q)}</span>
+      ${item.time ? `<span class="row-time">${item.time}</span>` : ''}
+    `;
+
+    const cb = row.querySelector('input');
+    cb.addEventListener('change', () => {
+      if (cb.checked) { selected.add(key); row.classList.add('checked'); }
+      else            { selected.delete(key); row.classList.remove('checked'); }
+      updateUI();
+    });
+
+    list.appendChild(row);
+  });
+
+  updateUI();
+}
+
+// ─── Update badge + button ────────────────────────────────────
+function updateUI() {
+  const total = SETS[currentSet].items.length;
+  const checkedInSet = SETS[currentSet].items.filter(i => selected.has(`${currentSet}:${i.name}`)).length;
+  document.getElementById('selected-count').textContent = `เลือก ${checkedInSet} / ${total}`;
+
+  const totalSelected = selected.size;
+  const btn = document.getElementById('btn-gen');
+  btn.disabled = totalSelected === 0;
+  btn.classList.toggle('ready', totalSelected > 0);
+  btn.textContent = totalSelected > 0 ? `สร้างรูปภาพ (${totalSelected})` : 'สร้างรูปภาพ';
+
+  const allCb = document.getElementById('select-all-cb');
+  const allChecked = checkedInSet === total && total > 0;
+  allCb.checked = allChecked;
+  allCb.indeterminate = checkedInSet > 0 && !allChecked;
+}
+
+// ─── Switch set tab ───────────────────────────────────────────
+function switchSet(idx) {
+  currentSet = idx;
+  document.querySelectorAll('.set-tab').forEach((t, i) => t.classList.toggle('active', i === idx));
+  document.getElementById('search-input').value = '';
+  renderList();
+}
+
+// ─── Toggle all ───────────────────────────────────────────────
+function toggleAll(checked) {
+  SETS[currentSet].items.forEach(item => {
+    const key = `${currentSet}:${item.name}`;
+    if (checked) selected.add(key);
+    else         selected.delete(key);
+  });
+  renderList();
+}
+
+// ─── Submit ───────────────────────────────────────────────────
+document.getElementById('main-form').addEventListener('submit', () => {
+  document.getElementById('loading').classList.add('show');
+
+  // ปิด loading หลังจาก 4 วินาที (browser รับไฟล์แล้ว)
+  setTimeout(() => {
+    document.getElementById('loading').classList.remove('show');
+  }, 4000);
+});
+
+// ─── Init ─────────────────────────────────────────────────────
+renderList();
+</script>
+</body>
+</html>

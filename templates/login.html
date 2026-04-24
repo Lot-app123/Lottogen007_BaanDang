@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LOTTO GEN — เข้าสู่ระบบ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #0a0b0f;
+  --surface:   #111318;
+  --surface-2: #181b22;
+  --border:    #1f2330;
+  --border-2:  #2a2f40;
+  --text:      #e8eaf0;
+  --muted:     #5a607a;
+  --muted-2:   #3d4257;
+  --gold:      #f0c040;
+  --gold-dim:  #7a601a;
+  --gold-glow: rgba(240,192,64,.15);
+  --red:       #ff4d6a;
+  --red-dim:   rgba(255,77,106,.12);
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: 'Kanit', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ─── Background decorations ────────────────────────────────── */
+.bg-deco {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+.bg-deco::before {
+  content: '';
+  position: absolute;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(240,192,64,.07) 0%, transparent 70%);
+  top: -200px; left: -200px;
+}
+.bg-deco::after {
+  content: '';
+  position: absolute;
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(79,127,255,.05) 0%, transparent 70%);
+  bottom: -150px; right: -150px;
+}
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 49px, var(--border) 49px, var(--border) 50px),
+    repeating-linear-gradient(90deg, transparent, transparent 49px, var(--border) 49px, var(--border) 50px);
+  opacity: .25;
+  z-index: 0;
+}
+
+/* ─── Card ───────────────────────────────────────────────────── */
+.card {
+  position: relative;
+  z-index: 1;
+  width: 380px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 40px 36px;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.03) inset,
+    0 24px 64px rgba(0,0,0,.5),
+    0 0 60px rgba(240,192,64,.04);
+  animation: slideUp .5s cubic-bezier(.22,1,.36,1);
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* top accent line */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 36px; right: 36px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+  border-radius: 1px;
+}
+
+/* ─── Logo block ─────────────────────────────────────────────── */
+.login-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 36px;
+}
+.logo-icon-lg {
+  width: 48px; height: 48px;
+  background: var(--gold);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  font-weight: 700;
+  color: #0a0b0f;
+  letter-spacing: -1px;
+  box-shadow: 0 0 24px rgba(240,192,64,.3);
+}
+.login-title {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--text);
+}
+.login-title span { color: var(--gold); }
+.login-sub {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: .5px;
+  font-weight: 400;
+}
+
+/* ─── Form ───────────────────────────────────────────────────── */
+.form-group {
+  margin-bottom: 16px;
+}
+.form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+  margin-bottom: 7px;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+}
+.input-wrap {
+  position: relative;
+}
+.input-icon {
+  position: absolute;
+  left: 12px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted-2);
+  pointer-events: none;
+  transition: color .2s;
+}
+.form-input {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 11px 12px 11px 38px;
+  font-family: 'Kanit', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text);
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+.form-input::placeholder { color: var(--muted-2); font-weight: 300; }
+.form-input:focus {
+  border-color: var(--gold-dim);
+  box-shadow: 0 0 0 3px rgba(240,192,64,.1);
+}
+.form-input:focus + .input-icon,
+.input-wrap:focus-within .input-icon {
+  color: var(--gold-dim);
+}
+
+/* password toggle */
+.pw-toggle {
+  position: absolute;
+  right: 12px; top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--muted-2);
+  padding: 4px;
+  border: none;
+  background: none;
+  line-height: 0;
+  transition: color .15s;
+}
+.pw-toggle:hover { color: var(--muted); }
+
+/* ─── Error alert ────────────────────────────────────────────── */
+.error-alert {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--red-dim);
+  border: 1px solid rgba(255,77,106,.25);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 13px;
+  color: var(--red);
+  margin-bottom: 16px;
+  animation: shake .4s ease;
+}
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20%,60%  { transform: translateX(-4px); }
+  40%,80%  { transform: translateX(4px); }
+}
+
+/* ─── Submit button ──────────────────────────────────────────── */
+.btn-login {
+  width: 100%;
+  margin-top: 8px;
+  font-family: 'Kanit', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #0a0b0f;
+  background: var(--gold);
+  border: none;
+  border-radius: 9px;
+  padding: 12px;
+  cursor: pointer;
+  letter-spacing: .5px;
+  transition: background .2s, box-shadow .2s, transform .1s;
+  box-shadow: 0 0 20px rgba(240,192,64,.25);
+  position: relative;
+  overflow: hidden;
+}
+.btn-login::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,.12) 0%, transparent 60%);
+  pointer-events: none;
+}
+.btn-login:hover {
+  background: #f5cc55;
+  box-shadow: 0 0 32px rgba(240,192,64,.4);
+}
+.btn-login:active { transform: scale(.98); }
+
+/* ─── Footer ─────────────────────────────────────────────────── */
+.card-footer {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.card-footer p {
+  font-size: 11px;
+  color: var(--muted-2);
+  font-family: 'IBM Plex Mono', monospace;
+}
+.status-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #2ecc8a;
+  box-shadow: 0 0 6px #2ecc8a;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%,100% { opacity: 1; }
+  50%      { opacity: .4; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-deco"></div>
+<div class="bg-grid"></div>
+
+<div class="card">
+  <!-- Logo -->
+  <div class="login-logo">
+    <div class="logo-icon-lg">L</div>
+    <div class="login-title">LOTTO<span>GEN</span></div>
+    <div class="login-sub">ระบบสร้างภาพหวย · เข้าสู่ระบบ</div>
+  </div>
+
+  <!-- Error (Jinja2 conditional) -->
+  <!-- {% if error %} -->
+  <!-- <div class="error-alert">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+    </svg>
+    {{ error }}
+  </div> -->
+  <!-- {% endif %} -->
+
+  <!-- Form -->
+  <form method="POST" action="/login" id="login-form">
+    <div class="form-group">
+      <label class="form-label" for="username">ชื่อผู้ใช้</label>
+      <div class="input-wrap">
+        <input
+          class="form-input"
+          type="text"
+          id="username"
+          name="username"
+          placeholder="กรอกชื่อผู้ใช้"
+          autocomplete="username"
+          required
+        >
+        <svg class="input-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="password">รหัสผ่าน</label>
+      <div class="input-wrap">
+        <input
+          class="form-input"
+          type="password"
+          id="password"
+          name="password"
+          placeholder="กรอกรหัสผ่าน"
+          autocomplete="current-password"
+          required
+        >
+        <svg class="input-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+        <button type="button" class="pw-toggle" id="pw-toggle" onclick="togglePw()" title="แสดง/ซ่อนรหัสผ่าน">
+          <svg id="eye-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <button type="submit" class="btn-login" id="btn-login">เข้าสู่ระบบ</button>
+  </form>
+
+  <div class="card-footer">
+    <div class="status-dot"></div>
+    <p>LOTTOGEN v2.0 · Secure</p>
+  </div>
+</div>
+
+<script>
+function togglePw() {
+  const pw = document.getElementById('password');
+  const icon = document.getElementById('eye-icon');
+  const isHidden = pw.type === 'password';
+  pw.type = isHidden ? 'text' : 'password';
+  icon.innerHTML = isHidden
+    ? `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>`
+    : `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`;
+}
+
+// Loading state on submit
+document.getElementById('login-form').addEventListener('submit', function() {
+  const btn = document.getElementById('btn-login');
+  btn.textContent = 'กำลังเข้าสู่ระบบ...';
+  btn.style.opacity = '.7';
+  btn.disabled = true;
+});
+</script>
+</body>
+</html>

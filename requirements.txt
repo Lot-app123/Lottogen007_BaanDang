@@ -1,0 +1,18 @@
+# Web Framework
+fastapi==0.115.5
+uvicorn[standard]==0.32.1
+
+# Templates
+jinja2==3.1.4
+
+# Auth (JWT)
+python-jose[cryptography]==3.3.0
+
+# Form parsing
+python-multipart==0.0.12
+
+# Image processing
+pillow==11.0.0
+
+# Timezone (built-in Python 3.9+, ไม่ต้องติดตั้งเพิ่ม)
+# zoneinfo — stdlib
