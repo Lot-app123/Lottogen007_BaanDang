@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>LOTTO GEN — สร้างเลขหวย</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -25,21 +25,25 @@
   --red:         #ff4d6a;
   --accent:      #4f7fff;
   --radius:      10px;
-  --header-h:    56px;
+  --header-h:    52px;
+  --bottom-bar:  64px;
 }
 
-body {
+html, body {
   font-family: 'Kanit', sans-serif;
   background: var(--bg);
   color: var(--text);
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
+  height: 100%;
   overflow: hidden;
 }
 
+body {
+  display: flex;
+  flex-direction: column;
+}
+
 /* ─── Scrollbar ──────────────────────────────────────────────── */
-::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar { width: 3px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 2px; }
 
@@ -50,30 +54,29 @@ header {
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
-  padding: 0 20px;
-  gap: 14px;
+  padding: 0 14px;
+  gap: 10px;
   flex-shrink: 0;
-  z-index: 10;
+  z-index: 20;
 }
 
 .logo {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
 }
 .logo-icon {
-  width: 28px; height: 28px;
+  width: 26px; height: 26px;
   background: var(--gold);
   border-radius: 6px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   color: #0a0b0f;
-  letter-spacing: -.5px;
   flex-shrink: 0;
 }
 .logo-text {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--text);
   letter-spacing: .5px;
@@ -81,82 +84,83 @@ header {
 .logo-text span { color: var(--gold); }
 
 .header-sep {
-  width: 1px; height: 22px;
+  width: 1px; height: 20px;
   background: var(--border);
-  margin: 0 4px;
 }
 
 .header-clock {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
 }
-.header-clock .date-pill {
+.date-pill {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 12px;
+  font-size: 11px;
   color: var(--muted);
-  padding: 3px 10px;
+  padding: 3px 8px;
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 20px;
 }
-.header-clock .time-pill {
+.time-pill {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   color: var(--gold);
-  padding: 3px 10px;
+  padding: 3px 8px;
   background: var(--gold-glow);
   border: 1px solid var(--gold-dim);
   border-radius: 20px;
-  letter-spacing: .5px;
+  letter-spacing: .3px;
 }
 
 .header-user {
   margin-left: auto;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 .user-badge {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 13px;
-  color: var(--muted);
+  gap: 5px;
 }
 .user-avatar {
-  width: 24px; height: 24px;
+  width: 22px; height: 22px;
   border-radius: 50%;
   background: var(--surface-2);
   border: 1px solid var(--border-2);
   display: flex; align-items: center; justify-content: center;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   color: var(--gold);
 }
+.user-name {
+  font-size: 12px;
+  color: var(--muted);
+}
 .logout-btn {
   font-family: 'Kanit', sans-serif;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
   color: var(--muted);
   text-decoration: none;
-  padding: 5px 12px;
+  padding: 4px 10px;
   border: 1px solid var(--border-2);
-  border-radius: 6px;
-  transition: color .15s, border-color .15s, background .15s;
+  border-radius: 5px;
+  transition: color .15s, border-color .15s;
 }
-.logout-btn:hover { color: var(--red); border-color: var(--red); background: rgba(255,77,106,.06); }
+.logout-btn:hover { color: var(--red); border-color: var(--red); }
 
-/* ─── Layout ──────────────────────────────────────────────────── */
+/* ─── Desktop Layout ──────────────────────────────────────────── */
 .app {
   display: grid;
-  grid-template-columns: 1fr 400px 72px;
+  grid-template-columns: 1fr 380px 68px;
   height: calc(100vh - var(--header-h));
   overflow: hidden;
 }
 
-/* ─── Left: Preview ──────────────────────────────────────────── */
+/* ─── Preview area ─────────────────────────────────────────────── */
 .preview-area {
   display: flex;
   flex-direction: column;
@@ -168,15 +172,17 @@ header {
 .preview-tabs-bar {
   display: flex;
   align-items: center;
-  gap: 0;
   padding: 0 16px;
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
   background: var(--surface);
   overflow-x: auto;
+  scrollbar-width: none;
 }
+.preview-tabs-bar::-webkit-scrollbar { display: none; }
+
 .image-tab {
-  padding: 14px 14px 12px;
+  padding: 13px 12px 11px;
   font-size: 12px;
   font-weight: 500;
   color: var(--muted);
@@ -187,7 +193,6 @@ header {
   user-select: none;
   position: relative;
   top: 1px;
-  letter-spacing: .2px;
 }
 .image-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
 .image-tab:hover:not(.active) { color: var(--text); }
@@ -197,7 +202,7 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 32px;
+  padding: 24px;
   overflow: hidden;
   position: relative;
 }
@@ -228,23 +233,22 @@ header {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   color: var(--muted-2);
-  font-size: 14px;
   position: relative;
   z-index: 1;
 }
-.preview-placeholder .ph-icon {
-  width: 64px; height: 64px;
-  border-radius: 16px;
+.ph-icon {
+  width: 60px; height: 60px;
+  border-radius: 14px;
   background: var(--surface);
   border: 1px dashed var(--border-2);
   display: flex; align-items: center; justify-content: center;
 }
-.preview-placeholder svg { width: 28px; height: 28px; opacity: .3; }
+.ph-icon svg { width: 26px; height: 26px; opacity: .3; }
 .preview-placeholder p { font-size: 13px; color: var(--muted-2); }
 
-/* ─── Middle: Panel ──────────────────────────────────────────── */
+/* ─── Panel (middle) ───────────────────────────────────────────── */
 .panel {
   background: var(--surface);
   border-right: 1px solid var(--border);
@@ -254,53 +258,53 @@ header {
 }
 
 .panel-header {
-  padding: 14px 16px 0;
+  padding: 12px 14px 0;
   flex-shrink: 0;
 }
 .panel-title-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 .panel-title {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--text);
   letter-spacing: .3px;
 }
 .selected-badge {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px;
+  font-size: 10px;
   color: var(--muted);
   background: var(--bg);
-  padding: 3px 9px;
+  padding: 2px 8px;
   border-radius: 20px;
   border: 1px solid var(--border);
 }
 
-/* search */
 .search-wrap {
   position: relative;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 .search-wrap input {
   width: 100%;
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 7px;
-  padding: 7px 12px 7px 32px;
+  padding: 7px 10px 7px 30px;
   font-family: 'Kanit', sans-serif;
   font-size: 13px;
   color: var(--text);
   outline: none;
   transition: border-color .15s;
+  -webkit-appearance: none;
 }
 .search-wrap input::placeholder { color: var(--muted-2); }
 .search-wrap input:focus { border-color: var(--border-2); }
 .search-icon {
   position: absolute;
-  left: 10px; top: 50%;
+  left: 9px; top: 50%;
   transform: translateY(-50%);
   color: var(--muted-2);
   pointer-events: none;
@@ -310,24 +314,25 @@ header {
   flex: 1;
   overflow-y: auto;
   padding: 2px 0 8px;
+  -webkit-overflow-scrolling: touch;
 }
 
-/* ─── Lottery row ────────────────────────────────────────────── */
+/* ─── Lottery row ─────────────────────────────────────────────── */
 .lottery-row {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 9px 16px;
+  padding: 9px 14px;
   cursor: pointer;
   transition: background .1s;
   border-left: 2px solid transparent;
+  -webkit-tap-highlight-color: transparent;
 }
 .lottery-row:hover { background: var(--surface-2); }
 .lottery-row.checked {
   background: rgba(240,192,64,.06);
   border-left-color: var(--gold-dim);
 }
-
 .cb-wrap {
   width: 16px; height: 16px;
   flex-shrink: 0;
@@ -351,23 +356,21 @@ header {
 }
 .cb-box svg { display: none; }
 .cb-wrap input:checked ~ .cb-box svg { display: block; }
-
 .row-label {
   flex: 1;
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 400;
   color: var(--text);
   user-select: none;
 }
 .lottery-row.checked .row-label { color: var(--gold); font-weight: 500; }
-
 .row-time {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px;
+  font-size: 10px;
   color: var(--muted);
   font-variant-numeric: tabular-nums;
   background: var(--bg);
-  padding: 2px 6px;
+  padding: 2px 5px;
   border-radius: 4px;
   border: 1px solid var(--border);
 }
@@ -375,25 +378,24 @@ header {
 /* ─── Panel footer ───────────────────────────────────────────── */
 .panel-footer {
   flex-shrink: 0;
-  padding: 10px 16px 14px;
+  padding: 8px 14px 12px;
   border-top: 1px solid var(--border);
   display: flex;
   align-items: center;
   gap: 10px;
 }
-
 .select-all-wrap {
   display: flex;
   align-items: center;
   gap: 6px;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 .select-all-label {
   font-size: 12px;
   color: var(--muted);
   user-select: none;
 }
-
 .btn-generate {
   margin-left: auto;
   font-family: 'Kanit', sans-serif;
@@ -403,38 +405,36 @@ header {
   background: var(--muted-2);
   border: none;
   border-radius: 8px;
-  padding: 8px 18px;
+  padding: 8px 16px;
   cursor: not-allowed;
   transition: background .2s, box-shadow .2s, transform .1s;
   letter-spacing: .3px;
   white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
 }
 .btn-generate.ready {
   background: var(--gold);
   cursor: pointer;
-  box-shadow: 0 0 20px rgba(240,192,64,.3);
+  box-shadow: 0 0 18px rgba(240,192,64,.3);
 }
-.btn-generate.ready:hover {
-  background: #f5cc55;
-  box-shadow: 0 0 28px rgba(240,192,64,.45);
-}
-.btn-generate.ready:active { transform: scale(.97); }
+.btn-generate.ready:hover { background: #f5cc55; }
+.btn-generate.ready:active { transform: scale(.96); }
 
-/* ─── Right: Set tabs ────────────────────────────────────────── */
+/* ─── Set tabs (right column) ────────────────────────────────── */
 .set-tabs {
   background: var(--surface);
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 14px 0;
-  gap: 6px;
+  padding: 12px 0;
+  gap: 5px;
   overflow-y: auto;
 }
 .set-tab {
-  width: 52px;
-  padding: 10px 4px;
-  border-radius: 8px;
-  font-size: 11px;
+  width: 50px;
+  padding: 9px 4px;
+  border-radius: 7px;
+  font-size: 10px;
   font-weight: 600;
   color: var(--muted);
   cursor: pointer;
@@ -442,8 +442,8 @@ header {
   border: 1px solid transparent;
   transition: color .15s, border-color .15s, background .15s;
   line-height: 1.4;
-  letter-spacing: .2px;
   user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 .set-tab:hover { color: var(--text); background: var(--surface-2); }
 .set-tab.active {
@@ -452,7 +452,7 @@ header {
   background: var(--gold-glow);
 }
 
-/* ─── Loading overlay ────────────────────────────────────────── */
+/* ─── Loading overlay ─────────────────────────────────────────── */
 .loading-overlay {
   position: fixed;
   inset: 0;
@@ -466,9 +466,8 @@ header {
   z-index: 100;
 }
 .loading-overlay.show { display: flex; }
-
 .spinner-ring {
-  width: 52px; height: 52px;
+  width: 50px; height: 50px;
   position: relative;
 }
 .spinner-ring::before, .spinner-ring::after {
@@ -488,7 +487,6 @@ header {
   animation: spin .7s linear infinite reverse;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
-
 .loading-text {
   font-size: 14px;
   font-weight: 500;
@@ -497,20 +495,173 @@ header {
 }
 .loading-text span { color: var(--gold); }
 
-/* ─── Empty state ────────────────────────────────────────────── */
+/* ─── Empty state ─────────────────────────────────────────────── */
 .empty-list {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 120px;
+  height: 100px;
   color: var(--muted-2);
   font-size: 13px;
-  gap: 6px;
 }
 
-/* ─── Highlight search match ─────────────────────────────────── */
+/* ─── Search highlight ────────────────────────────────────────── */
 .match { color: var(--gold); }
+
+/* ═══════════════════════════════════════════════════════════════
+   MOBILE PORTRAIT — ≤ 640px
+   Layout: header → tab bar → content → bottom bar
+   ═══════════════════════════════════════════════════════════════ */
+@media (max-width: 640px) {
+
+  :root { --header-h: 48px; }
+
+  body { overflow: hidden; height: 100dvh; }
+
+  /* hide date pill on very small screens */
+  .date-pill { display: none; }
+  .user-name  { display: none; }
+  .logout-btn { padding: 4px 8px; }
+  .header-sep { display: none; }
+
+  /* override desktop grid → column flex */
+  .app {
+    display: flex;
+    flex-direction: column;
+    height: calc(100dvh - var(--header-h));
+    overflow: hidden;
+  }
+
+  /* ── Mobile tab bar (set switcher at top) ── */
+  .set-tabs {
+    flex-direction: row;
+    flex-shrink: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    padding: 8px 12px;
+    gap: 6px;
+    border-bottom: 1px solid var(--border);
+    border-right: none;
+    height: auto;
+    background: var(--surface);
+    align-items: center;
+    order: 1;
+  }
+  .set-tabs::-webkit-scrollbar { display: none; }
+
+  .set-tab {
+    width: auto;
+    min-width: 64px;
+    padding: 6px 12px;
+    font-size: 12px;
+    line-height: 1.2;
+    border-radius: 20px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* ── Preview area: collapsible panel at top ── */
+  .preview-area {
+    flex-shrink: 0;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    order: 2;
+    height: 0;               /* collapsed by default */
+    overflow: hidden;
+    transition: height .3s ease;
+    min-height: 0;
+  }
+  .preview-area.expanded {
+    height: 240px;
+  }
+
+  /* ── Panel fills remaining space ── */
+  .panel {
+    flex: 1;
+    order: 3;
+    border-right: none;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  /* ── Bottom action bar ── */
+  .panel-footer {
+    padding: 10px 16px 16px;
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+    /* safe area for iPhone notch */
+    padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .btn-generate {
+    font-size: 14px;
+    padding: 10px 20px;
+    border-radius: 10px;
+  }
+  .btn-generate.ready {
+    box-shadow: 0 0 24px rgba(240,192,64,.35);
+  }
+
+  /* ── Lottery rows: slightly taller for touch ── */
+  .lottery-row {
+    padding: 11px 14px;
+  }
+  .row-label { font-size: 13.5px; }
+
+  /* ── Toggle preview button ── */
+  .preview-toggle-btn {
+    display: flex;
+  }
+
+  /* preview tabs bar on mobile */
+  .preview-tabs-bar {
+    background: var(--surface);
+    padding: 0 12px;
+  }
+  .image-tab {
+    padding: 10px 10px 9px;
+    font-size: 11px;
+  }
+
+  /* Panel header adjustments */
+  .panel-header {
+    padding: 10px 14px 0;
+  }
+}
+
+/* ─── Preview toggle button (mobile only) ─────────────────────── */
+.preview-toggle-btn {
+  display: none; /* hidden on desktop */
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-family: 'Kanit', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted);
+  cursor: pointer;
+  margin-left: auto;
+  -webkit-tap-highlight-color: transparent;
+  transition: color .15s, border-color .15s;
+  flex-shrink: 0;
+}
+.preview-toggle-btn.active {
+  color: var(--gold);
+  border-color: var(--gold-dim);
+  background: var(--gold-glow);
+}
+.preview-toggle-btn svg {
+  width: 13px; height: 13px;
+  transition: transform .3s ease;
+}
+.preview-toggle-btn.active svg {
+  transform: rotate(180deg);
+}
 </style>
 </head>
 <body>
@@ -529,7 +680,7 @@ header {
   <div class="header-user">
     <div class="user-badge">
       <div class="user-avatar">{{ user[0]|upper }}</div>
-      <span style="font-size:13px;color:var(--muted)">{{ user }}</span>
+      <span class="user-name">{{ user }}</span>
     </div>
     <div class="header-sep"></div>
     <a href="/logout" class="logout-btn">ออกจากระบบ</a>
@@ -540,13 +691,30 @@ header {
 <form method="POST" id="main-form">
 <div class="app">
 
+  <!-- Right: Set tabs — on mobile becomes top tab bar -->
+  <div class="set-tabs" id="set-tabs">
+    <div class="set-tab active" data-set="0" onclick="switchSet(0)">SET 1</div>
+    <div class="set-tab" data-set="1" onclick="switchSet(1)">SET 2</div>
+    <div class="set-tab" data-set="2" onclick="switchSet(2)">เสาร์-อาทิตย์</div>
+    <!-- mobile preview toggle -->
+    <button type="button" class="preview-toggle-btn" id="preview-toggle-btn" onclick="togglePreview()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="3" width="18" height="18" rx="2"/>
+        <circle cx="8.5" cy="8.5" r="1.5"/>
+        <path d="M21 15l-5-5L5 21"/>
+      </svg>
+      ดูรูป
+    </button>
+  </div>
+
   <!-- Left: Image preview -->
-  <div class="preview-area">
+  <div class="preview-area" id="preview-area">
     <div class="preview-tabs-bar" id="image-tabs">
       <div class="image-tab active">ตัวอย่าง</div>
     </div>
     <div class="preview-content">
-      <img src="/static/Baan.jpg" class="preview-img" id="preview-img" style="display:block">
+      <img src="/static/Baan.jpg" class="preview-img" id="preview-img" style="display:block"
+        onerror="this.style.display='none'; document.getElementById('preview-placeholder').style.display='flex'">
       <div class="preview-placeholder" id="preview-placeholder" style="display:none">
         <div class="ph-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -568,7 +736,7 @@ header {
         <span class="selected-badge" id="selected-count">เลือก 0 / 0</span>
       </div>
       <div class="search-wrap">
-        <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg class="search-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
         </svg>
         <input type="text" id="search-input" placeholder="ค้นหาหวย..." oninput="renderList()">
@@ -589,13 +757,6 @@ header {
       </label>
       <button type="submit" class="btn-generate" id="btn-gen" disabled>สร้างรูปภาพ</button>
     </div>
-  </div>
-
-  <!-- Right: Set tabs -->
-  <div class="set-tabs" id="set-tabs">
-    <div class="set-tab active" data-set="0" onclick="switchSet(0)">SET<br>1</div>
-    <div class="set-tab" data-set="1" onclick="switchSet(1)">SET<br>2</div>
-    <div class="set-tab" data-set="2" onclick="switchSet(2)">ส-อ</div>
   </div>
 
 </div>
@@ -727,6 +888,16 @@ const SETS = [
 // ─── State ────────────────────────────────────────────────────
 let currentSet = 0;
 const selected = new Set();
+let previewOpen = false;
+
+// ─── Mobile preview toggle ────────────────────────────────────
+function togglePreview() {
+  previewOpen = !previewOpen;
+  const area = document.getElementById('preview-area');
+  const btn  = document.getElementById('preview-toggle-btn');
+  area.classList.toggle('expanded', previewOpen);
+  btn.classList.toggle('active', previewOpen);
+}
 
 // ─── Clock ────────────────────────────────────────────────────
 function updateClock() {
@@ -745,7 +916,9 @@ function highlight(text, query) {
   if (!query) return text;
   const idx = text.toLowerCase().indexOf(query.toLowerCase());
   if (idx === -1) return text;
-  return text.slice(0, idx) + `<span class="match">${text.slice(idx, idx + query.length)}</span>` + text.slice(idx + query.length);
+  return text.slice(0, idx)
+    + `<span class="match">${text.slice(idx, idx + query.length)}</span>`
+    + text.slice(idx + query.length);
 }
 
 // ─── Render list ──────────────────────────────────────────────
@@ -768,7 +941,6 @@ function renderList() {
   filtered.forEach(item => {
     const key = `${currentSet}:${item.name}`;
     const isChecked = selected.has(key);
-
     const row = document.createElement('label');
     row.className = 'lottery-row' + (isChecked ? ' checked' : '');
     row.innerHTML = `
@@ -783,14 +955,12 @@ function renderList() {
       <span class="row-label">${highlight(item.name, q)}</span>
       ${item.time ? `<span class="row-time">${item.time}</span>` : ''}
     `;
-
     const cb = row.querySelector('input');
     cb.addEventListener('change', () => {
       if (cb.checked) { selected.add(key); row.classList.add('checked'); }
       else            { selected.delete(key); row.classList.remove('checked'); }
       updateUI();
     });
-
     list.appendChild(row);
   });
 
@@ -836,8 +1006,6 @@ function toggleAll(checked) {
 // ─── Submit ───────────────────────────────────────────────────
 document.getElementById('main-form').addEventListener('submit', () => {
   document.getElementById('loading').classList.add('show');
-
-  // ปิด loading หลังจาก 4 วินาที (browser รับไฟล์แล้ว)
   setTimeout(() => {
     document.getElementById('loading').classList.remove('show');
   }, 4000);
