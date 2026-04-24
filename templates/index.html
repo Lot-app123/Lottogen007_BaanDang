@@ -25,8 +25,7 @@
   --red:         #ff4d6a;
   --accent:      #4f7fff;
   --radius:      10px;
-  --header-h:    52px;
-  --bottom-bar:  64px;
+  --header-h:    56px;
 }
 
 html, body {
@@ -43,7 +42,7 @@ body {
 }
 
 /* ─── Scrollbar ──────────────────────────────────────────────── */
-::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 2px; }
 
@@ -54,619 +53,273 @@ header {
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
-  padding: 0 14px;
-  gap: 10px;
+  padding: 0 20px;
+  gap: 14px;
   flex-shrink: 0;
   z-index: 20;
 }
 
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-}
+.logo { display: flex; align-items: center; gap: 8px; }
 .logo-icon {
-  width: 26px; height: 26px;
+  width: 28px; height: 28px;
   background: var(--gold);
   border-radius: 6px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 13px;
-  font-weight: 700;
-  color: #0a0b0f;
-  flex-shrink: 0;
+  font-size: 14px; font-weight: 700; color: #0a0b0f;
+  letter-spacing: -.5px; flex-shrink: 0;
 }
-.logo-text {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--text);
-  letter-spacing: .5px;
-}
+.logo-text { font-size: 15px; font-weight: 700; color: var(--text); letter-spacing: .5px; }
 .logo-text span { color: var(--gold); }
 
-.header-sep {
-  width: 1px; height: 20px;
-  background: var(--border);
-}
+.header-sep { width: 1px; height: 22px; background: var(--border); margin: 0 4px; }
 
-.header-clock {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
+.header-clock { display: flex; align-items: center; gap: 10px; }
 .date-pill {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px;
-  color: var(--muted);
-  padding: 3px 8px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 20px;
+  font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted);
+  padding: 3px 10px; background: var(--bg); border: 1px solid var(--border); border-radius: 20px;
 }
 .time-pill {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--gold);
-  padding: 3px 8px;
-  background: var(--gold-glow);
-  border: 1px solid var(--gold-dim);
-  border-radius: 20px;
-  letter-spacing: .3px;
+  font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 500; color: var(--gold);
+  padding: 3px 10px; background: var(--gold-glow); border: 1px solid var(--gold-dim); border-radius: 20px;
+  letter-spacing: .5px;
 }
 
-.header-user {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.user-badge {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
+.header-user { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.user-badge { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); }
 .user-avatar {
-  width: 22px; height: 22px;
-  border-radius: 50%;
-  background: var(--surface-2);
-  border: 1px solid var(--border-2);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 10px;
-  font-weight: 600;
-  color: var(--gold);
-}
-.user-name {
-  font-size: 12px;
-  color: var(--muted);
+  width: 24px; height: 24px; border-radius: 50%; background: var(--surface-2);
+  border: 1px solid var(--border-2); display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 600; color: var(--gold);
 }
 .logout-btn {
-  font-family: 'Kanit', sans-serif;
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--muted);
-  text-decoration: none;
-  padding: 4px 10px;
-  border: 1px solid var(--border-2);
-  border-radius: 5px;
-  transition: color .15s, border-color .15s;
+  font-family: 'Kanit', sans-serif; font-size: 12px; font-weight: 500; color: var(--muted);
+  text-decoration: none; padding: 5px 12px; border: 1px solid var(--border-2); border-radius: 6px;
+  transition: color .15s, border-color .15s, background .15s;
 }
-.logout-btn:hover { color: var(--red); border-color: var(--red); }
+.logout-btn:hover { color: var(--red); border-color: var(--red); background: rgba(255,77,106,.06); }
 
-/* ─── Desktop Layout ──────────────────────────────────────────── */
+/* ─── Layout (Desktop First) ─────────────────────────────────── */
 .app {
   display: grid;
-  grid-template-columns: 1fr 380px 68px;
+  grid-template-columns: 1fr 400px 72px; /* ใช้สัดส่วน Desktop ของคุณเป็นหลัก */
   height: calc(100vh - var(--header-h));
   overflow: hidden;
 }
 
-/* ─── Preview area ─────────────────────────────────────────────── */
+/* ─── Left: Preview ──────────────────────────────────────────── */
 .preview-area {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  border-right: 1px solid var(--border);
-  background: var(--bg);
+  display: flex; flex-direction: column; overflow: hidden;
+  border-right: 1px solid var(--border); background: var(--bg);
 }
-
 .preview-tabs-bar {
-  display: flex;
-  align-items: center;
-  padding: 0 16px;
-  border-bottom: 1px solid var(--border);
-  flex-shrink: 0;
-  background: var(--surface);
-  overflow-x: auto;
-  scrollbar-width: none;
+  display: flex; align-items: center; padding: 0 16px; border-bottom: 1px solid var(--border);
+  flex-shrink: 0; background: var(--surface); overflow-x: auto; scrollbar-width: none;
 }
 .preview-tabs-bar::-webkit-scrollbar { display: none; }
-
 .image-tab {
-  padding: 13px 12px 11px;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--muted);
-  cursor: pointer;
-  border-bottom: 2px solid transparent;
-  white-space: nowrap;
-  transition: color .15s;
-  user-select: none;
-  position: relative;
-  top: 1px;
+  padding: 14px 14px 12px; font-size: 12px; font-weight: 500; color: var(--muted);
+  cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap;
+  transition: color .15s; user-select: none; position: relative; top: 1px;
 }
 .image-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
 .image-tab:hover:not(.active) { color: var(--text); }
 
 .preview-content {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  overflow: hidden;
-  position: relative;
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  padding: 32px; overflow: hidden; position: relative;
 }
 .preview-content::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 60% 60% at 30% 40%, rgba(240,192,64,.04) 0%, transparent 70%),
-    repeating-linear-gradient(0deg, transparent, transparent 39px, var(--border) 39px, var(--border) 40px),
-    repeating-linear-gradient(90deg, transparent, transparent 39px, var(--border) 39px, var(--border) 40px);
-  opacity: .5;
-  pointer-events: none;
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 60% at 30% 40%, rgba(240,192,64,.04) 0%, transparent 70%),
+              repeating-linear-gradient(0deg, transparent, transparent 39px, var(--border) 39px, var(--border) 40px),
+              repeating-linear-gradient(90deg, transparent, transparent 39px, var(--border) 39px, var(--border) 40px);
+  opacity: .5; pointer-events: none;
 }
 .preview-img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  border-radius: 10px;
-  box-shadow: 0 8px 40px rgba(0,0,0,.6), 0 0 0 1px var(--border);
-  position: relative;
-  z-index: 1;
+  max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 10px;
+  box-shadow: 0 8px 40px rgba(0,0,0,.6), 0 0 0 1px var(--border); position: relative; z-index: 1;
   animation: fadeIn .3s ease;
 }
 @keyframes fadeIn { from { opacity: 0; transform: scale(.97); } to { opacity: 1; transform: scale(1); } }
 
 .preview-placeholder {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  color: var(--muted-2);
-  position: relative;
-  z-index: 1;
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+  color: var(--muted-2); font-size: 14px; position: relative; z-index: 1;
 }
 .ph-icon {
-  width: 60px; height: 60px;
-  border-radius: 14px;
-  background: var(--surface);
-  border: 1px dashed var(--border-2);
-  display: flex; align-items: center; justify-content: center;
+  width: 64px; height: 64px; border-radius: 16px; background: var(--surface);
+  border: 1px dashed var(--border-2); display: flex; align-items: center; justify-content: center;
 }
-.ph-icon svg { width: 26px; height: 26px; opacity: .3; }
-.preview-placeholder p { font-size: 13px; color: var(--muted-2); }
+.ph-icon svg { width: 28px; height: 28px; opacity: .3; }
 
-/* ─── Panel (middle) ───────────────────────────────────────────── */
+/* ─── Middle: Panel ──────────────────────────────────────────── */
 .panel {
-  background: var(--surface);
-  border-right: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+  background: var(--surface); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; overflow: hidden;
 }
-
-.panel-header {
-  padding: 12px 14px 0;
-  flex-shrink: 0;
-}
-.panel-title-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 8px;
-}
-.panel-title {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text);
-  letter-spacing: .3px;
-}
+.panel-header { padding: 14px 16px 0; flex-shrink: 0; }
+.panel-title-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.panel-title { font-size: 14px; font-weight: 600; color: var(--text); letter-spacing: .3px; }
 .selected-badge {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px;
-  color: var(--muted);
-  background: var(--bg);
-  padding: 2px 8px;
-  border-radius: 20px;
-  border: 1px solid var(--border);
+  font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted);
+  background: var(--bg); padding: 3px 9px; border-radius: 20px; border: 1px solid var(--border);
 }
 
-.search-wrap {
-  position: relative;
-  margin-bottom: 8px;
-}
+.search-wrap { position: relative; margin-bottom: 10px; }
 .search-wrap input {
-  width: 100%;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 7px;
-  padding: 7px 10px 7px 30px;
-  font-family: 'Kanit', sans-serif;
-  font-size: 13px;
-  color: var(--text);
-  outline: none;
-  transition: border-color .15s;
-  -webkit-appearance: none;
+  width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 7px;
+  padding: 7px 12px 7px 32px; font-family: 'Kanit', sans-serif; font-size: 13px; color: var(--text);
+  outline: none; transition: border-color .15s; -webkit-appearance: none;
 }
 .search-wrap input::placeholder { color: var(--muted-2); }
 .search-wrap input:focus { border-color: var(--border-2); }
 .search-icon {
-  position: absolute;
-  left: 9px; top: 50%;
-  transform: translateY(-50%);
-  color: var(--muted-2);
-  pointer-events: none;
+  position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--muted-2); pointer-events: none;
 }
 
-.panel-list {
-  flex: 1;
-  overflow-y: auto;
-  padding: 2px 0 8px;
-  -webkit-overflow-scrolling: touch;
-}
+.panel-list { flex: 1; overflow-y: auto; padding: 2px 0 8px; -webkit-overflow-scrolling: touch; }
 
-/* ─── Lottery row ─────────────────────────────────────────────── */
 .lottery-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 9px 14px;
-  cursor: pointer;
-  transition: background .1s;
-  border-left: 2px solid transparent;
+  display: flex; align-items: center; gap: 10px; padding: 9px 16px;
+  cursor: pointer; transition: background .1s; border-left: 2px solid transparent;
   -webkit-tap-highlight-color: transparent;
 }
 .lottery-row:hover { background: var(--surface-2); }
-.lottery-row.checked {
-  background: rgba(240,192,64,.06);
-  border-left-color: var(--gold-dim);
-}
-.cb-wrap {
-  width: 16px; height: 16px;
-  flex-shrink: 0;
-  position: relative;
-}
-.cb-wrap input {
-  position: absolute; opacity: 0; width: 100%; height: 100%; cursor: pointer; margin: 0;
-}
+.lottery-row.checked { background: rgba(240,192,64,.06); border-left-color: var(--gold-dim); }
+
+.cb-wrap { width: 16px; height: 16px; flex-shrink: 0; position: relative; }
+.cb-wrap input { position: absolute; opacity: 0; width: 100%; height: 100%; cursor: pointer; margin: 0; }
 .cb-box {
-  width: 16px; height: 16px;
-  border: 1.5px solid var(--border-2);
-  border-radius: 4px;
-  background: var(--bg);
-  display: flex; align-items: center; justify-content: center;
-  transition: border-color .15s, background .15s;
-  pointer-events: none;
+  width: 16px; height: 16px; border: 1.5px solid var(--border-2); border-radius: 4px;
+  background: var(--bg); display: flex; align-items: center; justify-content: center;
+  transition: border-color .15s, background .15s; pointer-events: none;
 }
-.cb-wrap input:checked ~ .cb-box {
-  background: var(--gold);
-  border-color: var(--gold);
-}
+.cb-wrap input:checked ~ .cb-box { background: var(--gold); border-color: var(--gold); }
 .cb-box svg { display: none; }
 .cb-wrap input:checked ~ .cb-box svg { display: block; }
-.row-label {
-  flex: 1;
-  font-size: 13px;
-  font-weight: 400;
-  color: var(--text);
-  user-select: none;
-}
+
+.row-label { flex: 1; font-size: 13.5px; font-weight: 400; color: var(--text); user-select: none; }
 .lottery-row.checked .row-label { color: var(--gold); font-weight: 500; }
 .row-time {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px;
-  color: var(--muted);
-  font-variant-numeric: tabular-nums;
-  background: var(--bg);
-  padding: 2px 5px;
-  border-radius: 4px;
-  border: 1px solid var(--border);
+  font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted);
+  font-variant-numeric: tabular-nums; background: var(--bg); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border);
 }
 
-/* ─── Panel footer ───────────────────────────────────────────── */
 .panel-footer {
-  flex-shrink: 0;
-  padding: 8px 14px 12px;
-  border-top: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  flex-shrink: 0; padding: 10px 16px 14px; border-top: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
 }
-.select-all-wrap {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-.select-all-label {
-  font-size: 12px;
-  color: var(--muted);
-  user-select: none;
-}
-.btn-generate {
-  margin-left: auto;
-  font-family: 'Kanit', sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--bg);
-  background: var(--muted-2);
-  border: none;
-  border-radius: 8px;
-  padding: 8px 16px;
-  cursor: not-allowed;
-  transition: background .2s, box-shadow .2s, transform .1s;
-  letter-spacing: .3px;
-  white-space: nowrap;
-  -webkit-tap-highlight-color: transparent;
-}
-.btn-generate.ready {
-  background: var(--gold);
-  cursor: pointer;
-  box-shadow: 0 0 18px rgba(240,192,64,.3);
-}
-.btn-generate.ready:hover { background: #f5cc55; }
-.btn-generate.ready:active { transform: scale(.96); }
+.select-all-wrap { display: flex; align-items: center; gap: 6px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.select-all-label { font-size: 12px; color: var(--muted); user-select: none; }
 
-/* ─── Set tabs (right column) ────────────────────────────────── */
+.btn-generate {
+  margin-left: auto; font-family: 'Kanit', sans-serif; font-size: 13px; font-weight: 600;
+  color: var(--bg); background: var(--muted-2); border: none; border-radius: 8px;
+  padding: 8px 18px; cursor: not-allowed; transition: background .2s, box-shadow .2s, transform .1s;
+  letter-spacing: .3px; white-space: nowrap; -webkit-tap-highlight-color: transparent;
+}
+.btn-generate.ready { background: var(--gold); cursor: pointer; box-shadow: 0 0 20px rgba(240,192,64,.3); }
+.btn-generate.ready:hover { background: #f5cc55; box-shadow: 0 0 28px rgba(240,192,64,.45); }
+.btn-generate.ready:active { transform: scale(.97); }
+
+/* ─── Right: Set tabs ────────────────────────────────────────── */
 .set-tabs {
-  background: var(--surface);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 12px 0;
-  gap: 5px;
-  overflow-y: auto;
+  background: var(--surface); display: flex; flex-direction: column;
+  align-items: center; padding: 14px 0; gap: 6px; overflow-y: auto;
 }
 .set-tab {
-  width: 50px;
-  padding: 9px 4px;
-  border-radius: 7px;
-  font-size: 10px;
-  font-weight: 600;
-  color: var(--muted);
-  cursor: pointer;
-  text-align: center;
-  border: 1px solid transparent;
-  transition: color .15s, border-color .15s, background .15s;
-  line-height: 1.4;
-  user-select: none;
+  width: 52px; padding: 10px 4px; border-radius: 8px; font-size: 11px; font-weight: 600;
+  color: var(--muted); cursor: pointer; text-align: center; border: 1px solid transparent;
+  transition: color .15s, border-color .15s, background .15s; line-height: 1.4; user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
 .set-tab:hover { color: var(--text); background: var(--surface-2); }
-.set-tab.active {
-  color: var(--gold);
-  border-color: var(--gold-dim);
-  background: var(--gold-glow);
-}
+.set-tab.active { color: var(--gold); border-color: var(--gold-dim); background: var(--gold-glow); }
 
-/* ─── Loading overlay ─────────────────────────────────────────── */
+/* Preview Toggle Button (Hidden on Desktop) */
+.preview-toggle-btn { display: none; }
+
+/* ─── Loading overlay ────────────────────────────────────────── */
 .loading-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(10,11,15,.85);
-  backdrop-filter: blur(6px);
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  z-index: 100;
+  position: fixed; inset: 0; background: rgba(10,11,15,.85); backdrop-filter: blur(6px);
+  display: none; flex-direction: column; align-items: center; justify-content: center; gap: 20px; z-index: 100;
 }
 .loading-overlay.show { display: flex; }
-.spinner-ring {
-  width: 50px; height: 50px;
-  position: relative;
-}
-.spinner-ring::before, .spinner-ring::after {
-  content: '';
-  position: absolute;
-  border-radius: 50%;
-  border: 2px solid transparent;
-}
-.spinner-ring::before {
-  inset: 0;
-  border-top-color: var(--gold);
-  animation: spin 1s linear infinite;
-}
-.spinner-ring::after {
-  inset: 6px;
-  border-top-color: rgba(240,192,64,.3);
-  animation: spin .7s linear infinite reverse;
-}
+.spinner-ring { width: 52px; height: 52px; position: relative; }
+.spinner-ring::before, .spinner-ring::after { content: ''; position: absolute; border-radius: 50%; border: 2px solid transparent; }
+.spinner-ring::before { inset: 0; border-top-color: var(--gold); animation: spin 1s linear infinite; }
+.spinner-ring::after { inset: 6px; border-top-color: rgba(240,192,64,.3); animation: spin .7s linear infinite reverse; }
 @keyframes spin { to { transform: rotate(360deg); } }
-.loading-text {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--muted);
-  letter-spacing: .5px;
-}
+.loading-text { font-size: 14px; font-weight: 500; color: var(--muted); letter-spacing: .5px; }
 .loading-text span { color: var(--gold); }
-
-/* ─── Empty state ─────────────────────────────────────────────── */
-.empty-list {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100px;
-  color: var(--muted-2);
-  font-size: 13px;
-}
-
-/* ─── Search highlight ────────────────────────────────────────── */
+.empty-list { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 120px; color: var(--muted-2); font-size: 13px; }
 .match { color: var(--gold); }
 
 /* ═══════════════════════════════════════════════════════════════
-   MOBILE PORTRAIT — ≤ 640px
-   Layout: header → tab bar → content → bottom bar
+   MOBILE PORTRAIT (Responsive RWD) — ≤ 640px
    ═══════════════════════════════════════════════════════════════ */
 @media (max-width: 640px) {
-
   :root { --header-h: 48px; }
-
   body { overflow: hidden; height: 100dvh; }
 
-  /* hide date pill on very small screens */
-  .date-pill { display: none; }
-  .user-name  { display: none; }
+  /* ปรับแต่ง Header สำหรับมือถือ */
+  .date-pill, .user-name, .header-sep { display: none; }
   .logout-btn { padding: 4px 8px; }
-  .header-sep { display: none; }
+  header { padding: 0 14px; }
 
-  /* override desktop grid → column flex */
+  /* เปลี่ยนจาก Grid แนวนอน เป็น Flex แนวตั้ง */
   .app {
     display: flex;
     flex-direction: column;
     height: calc(100dvh - var(--header-h));
-    overflow: hidden;
   }
 
-  /* ── Mobile tab bar (set switcher at top) ── */
+  /* 1. ย้าย Tab Set มาเรียงแนวนอนไว้ด้านบนสุด */
   .set-tabs {
-    flex-direction: row;
-    flex-shrink: 0;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scrollbar-width: none;
-    padding: 8px 12px;
-    gap: 6px;
-    border-bottom: 1px solid var(--border);
-    border-right: none;
-    height: auto;
-    background: var(--surface);
-    align-items: center;
-    order: 1;
+    flex-direction: row; flex-shrink: 0; overflow-x: auto; padding: 8px 12px;
+    gap: 6px; border-bottom: 1px solid var(--border); border-right: none;
+    height: auto; align-items: center;
+    order: 1; /* บังคับให้อยู่ลำดับแรกบนจอ */
   }
-  .set-tabs::-webkit-scrollbar { display: none; }
+  .set-tab { width: auto; min-width: 64px; padding: 6px 12px; font-size: 12px; border-radius: 20px; white-space: nowrap; }
 
-  .set-tab {
-    width: auto;
-    min-width: 64px;
-    padding: 6px 12px;
-    font-size: 12px;
-    line-height: 1.2;
-    border-radius: 20px;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-
-  /* ── Preview area: collapsible panel at top ── */
+  /* 2. พื้นที่แสดงตัวอย่างรูปภาพ (เปิด/ปิด ได้) */
   .preview-area {
-    flex-shrink: 0;
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-    order: 2;
-    height: 0;               /* collapsed by default */
-    overflow: hidden;
-    transition: height .3s ease;
-    min-height: 0;
+    flex-shrink: 0; border-right: none; border-bottom: 1px solid var(--border);
+    height: 0; overflow: hidden; transition: height .3s ease; min-height: 0;
+    order: 2; /* ลำดับที่สอง */
   }
-  .preview-area.expanded {
-    height: 240px;
-  }
+  .preview-area.expanded { height: 240px; }
+  .preview-tabs-bar { padding: 0 12px; }
+  .image-tab { padding: 10px 10px 9px; font-size: 11px; }
 
-  /* ── Panel fills remaining space ── */
-  .panel {
-    flex: 1;
-    order: 3;
-    border-right: none;
-    min-height: 0;
-    overflow: hidden;
-  }
-
-  /* ── Bottom action bar ── */
+  /* 3. Panel รายการหวย กินพื้นที่ส่วนที่เหลือ */
+  .panel { flex: 1; border-right: none; min-height: 0; order: 3; }
+  .panel-header { padding: 10px 14px 0; }
+  .lottery-row { padding: 11px 14px; }
+  
+  /* 4. Action Bar ด้านล่าง รองรับ iPhone Notch */
   .panel-footer {
     padding: 10px 16px 16px;
-    border-top: 1px solid var(--border);
-    background: var(--surface);
-    /* safe area for iPhone notch */
     padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
   }
+  .btn-generate { font-size: 14px; padding: 10px 20px; border-radius: 10px; }
 
-  .btn-generate {
-    font-size: 14px;
-    padding: 10px 20px;
-    border-radius: 10px;
-  }
-  .btn-generate.ready {
-    box-shadow: 0 0 24px rgba(240,192,64,.35);
-  }
-
-  /* ── Lottery rows: slightly taller for touch ── */
-  .lottery-row {
-    padding: 11px 14px;
-  }
-  .row-label { font-size: 13.5px; }
-
-  /* ── Toggle preview button ── */
+  /* แสดงปุ่ม Toggle สำหรับ Preview บนมือถือ */
   .preview-toggle-btn {
-    display: flex;
+    display: flex; align-items: center; gap: 6px; padding: 5px 10px;
+    background: var(--bg); border: 1px solid var(--border); border-radius: 6px;
+    font-family: 'Kanit', sans-serif; font-size: 11px; font-weight: 500; color: var(--muted);
+    cursor: pointer; margin-left: auto; transition: color .15s, border-color .15s; flex-shrink: 0;
   }
-
-  /* preview tabs bar on mobile */
-  .preview-tabs-bar {
-    background: var(--surface);
-    padding: 0 12px;
-  }
-  .image-tab {
-    padding: 10px 10px 9px;
-    font-size: 11px;
-  }
-
-  /* Panel header adjustments */
-  .panel-header {
-    padding: 10px 14px 0;
-  }
-}
-
-/* ─── Preview toggle button (mobile only) ─────────────────────── */
-.preview-toggle-btn {
-  display: none; /* hidden on desktop */
-  align-items: center;
-  gap: 6px;
-  padding: 5px 10px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  font-family: 'Kanit', sans-serif;
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--muted);
-  cursor: pointer;
-  margin-left: auto;
-  -webkit-tap-highlight-color: transparent;
-  transition: color .15s, border-color .15s;
-  flex-shrink: 0;
-}
-.preview-toggle-btn.active {
-  color: var(--gold);
-  border-color: var(--gold-dim);
-  background: var(--gold-glow);
-}
-.preview-toggle-btn svg {
-  width: 13px; height: 13px;
-  transition: transform .3s ease;
-}
-.preview-toggle-btn.active svg {
-  transform: rotate(180deg);
+  .preview-toggle-btn.active { color: var(--gold); border-color: var(--gold-dim); background: var(--gold-glow); }
+  .preview-toggle-btn svg { width: 13px; height: 13px; transition: transform .3s ease; }
+  .preview-toggle-btn.active svg { transform: rotate(180deg); }
 }
 </style>
 </head>
 <body>
 
-<!-- ── Header ─────────────────────────────────────────────────── -->
 <header>
   <div class="logo">
     <div class="logo-icon">L</div>
@@ -680,41 +333,23 @@ header {
   <div class="header-user">
     <div class="user-badge">
       <div class="user-avatar">{{ user[0]|upper }}</div>
-      <span class="user-name">{{ user }}</span>
+      <span class="user-name" style="font-size:13px;color:var(--muted)">{{ user }}</span>
     </div>
     <div class="header-sep"></div>
     <a href="/logout" class="logout-btn">ออกจากระบบ</a>
   </div>
 </header>
 
-<!-- ── Main ───────────────────────────────────────────────────── -->
 <form method="POST" id="main-form">
 <div class="app">
 
-  <!-- Right: Set tabs — on mobile becomes top tab bar -->
-  <div class="set-tabs" id="set-tabs">
-    <div class="set-tab active" data-set="0" onclick="switchSet(0)">SET 1</div>
-    <div class="set-tab" data-set="1" onclick="switchSet(1)">SET 2</div>
-    <div class="set-tab" data-set="2" onclick="switchSet(2)">เสาร์-อาทิตย์</div>
-    <!-- mobile preview toggle -->
-    <button type="button" class="preview-toggle-btn" id="preview-toggle-btn" onclick="togglePreview()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <rect x="3" y="3" width="18" height="18" rx="2"/>
-        <circle cx="8.5" cy="8.5" r="1.5"/>
-        <path d="M21 15l-5-5L5 21"/>
-      </svg>
-      ดูรูป
-    </button>
-  </div>
-
-  <!-- Left: Image preview -->
   <div class="preview-area" id="preview-area">
     <div class="preview-tabs-bar" id="image-tabs">
       <div class="image-tab active">ตัวอย่าง</div>
     </div>
     <div class="preview-content">
       <img src="/static/Baan.jpg" class="preview-img" id="preview-img" style="display:block"
-        onerror="this.style.display='none'; document.getElementById('preview-placeholder').style.display='flex'">
+           onerror="this.style.display='none'; document.getElementById('preview-placeholder').style.display='flex'">
       <div class="preview-placeholder" id="preview-placeholder" style="display:none">
         <div class="ph-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -728,7 +363,6 @@ header {
     </div>
   </div>
 
-  <!-- Middle: Lottery list -->
   <div class="panel">
     <div class="panel-header">
       <div class="panel-title-row">
@@ -736,7 +370,7 @@ header {
         <span class="selected-badge" id="selected-count">เลือก 0 / 0</span>
       </div>
       <div class="search-wrap">
-        <svg class="search-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
         </svg>
         <input type="text" id="search-input" placeholder="ค้นหาหวย..." oninput="renderList()">
@@ -759,17 +393,30 @@ header {
     </div>
   </div>
 
+  <div class="set-tabs" id="set-tabs">
+    <div class="set-tab active" data-set="0" onclick="switchSet(0)">SET<br class="desktop-br"> 1</div>
+    <div class="set-tab" data-set="1" onclick="switchSet(1)">SET<br class="desktop-br"> 2</div>
+    <div class="set-tab" data-set="2" onclick="switchSet(2)">ส-อ</div>
+    
+    <button type="button" class="preview-toggle-btn" id="preview-toggle-btn" onclick="togglePreview()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="3" width="18" height="18" rx="2"/>
+        <circle cx="8.5" cy="8.5" r="1.5"/>
+        <path d="M21 15l-5-5L5 21"/>
+      </svg>
+      ดูรูป
+    </button>
+  </div>
+
 </div>
 </form>
 
-<!-- ── Loading overlay ────────────────────────────────────────── -->
 <div class="loading-overlay" id="loading">
   <div class="spinner-ring"></div>
   <div class="loading-text">กำลังสร้าง <span>รูปภาพ</span>...</div>
 </div>
 
 <script>
-// ─── Data ─────────────────────────────────────────────────────
 const SETS = [
   {
     label: 'SET 1',
@@ -885,7 +532,6 @@ const SETS = [
   }
 ];
 
-// ─── State ────────────────────────────────────────────────────
 let currentSet = 0;
 const selected = new Set();
 let previewOpen = false;
@@ -899,7 +545,6 @@ function togglePreview() {
   btn.classList.toggle('active', previewOpen);
 }
 
-// ─── Clock ────────────────────────────────────────────────────
 function updateClock() {
   const now = new Date();
   const opts = { timeZone: 'Asia/Bangkok', hour12: false };
@@ -911,17 +556,13 @@ function updateClock() {
 updateClock();
 setInterval(updateClock, 1000);
 
-// ─── Highlight search match ───────────────────────────────────
 function highlight(text, query) {
   if (!query) return text;
   const idx = text.toLowerCase().indexOf(query.toLowerCase());
   if (idx === -1) return text;
-  return text.slice(0, idx)
-    + `<span class="match">${text.slice(idx, idx + query.length)}</span>`
-    + text.slice(idx + query.length);
+  return text.slice(0, idx) + `<span class="match">${text.slice(idx, idx + query.length)}</span>` + text.slice(idx + query.length);
 }
 
-// ─── Render list ──────────────────────────────────────────────
 function renderList() {
   const list = document.getElementById('panel-list');
   const setData = SETS[currentSet];
@@ -941,6 +582,7 @@ function renderList() {
   filtered.forEach(item => {
     const key = `${currentSet}:${item.name}`;
     const isChecked = selected.has(key);
+
     const row = document.createElement('label');
     row.className = 'lottery-row' + (isChecked ? ' checked' : '');
     row.innerHTML = `
@@ -955,19 +597,20 @@ function renderList() {
       <span class="row-label">${highlight(item.name, q)}</span>
       ${item.time ? `<span class="row-time">${item.time}</span>` : ''}
     `;
+
     const cb = row.querySelector('input');
     cb.addEventListener('change', () => {
       if (cb.checked) { selected.add(key); row.classList.add('checked'); }
       else            { selected.delete(key); row.classList.remove('checked'); }
       updateUI();
     });
+
     list.appendChild(row);
   });
 
   updateUI();
 }
 
-// ─── Update badge + button ────────────────────────────────────
 function updateUI() {
   const total = SETS[currentSet].items.length;
   const checkedInSet = SETS[currentSet].items.filter(i => selected.has(`${currentSet}:${i.name}`)).length;
@@ -985,15 +628,21 @@ function updateUI() {
   allCb.indeterminate = checkedInSet > 0 && !allChecked;
 }
 
-// ─── Switch set tab ───────────────────────────────────────────
 function switchSet(idx) {
   currentSet = idx;
-  document.querySelectorAll('.set-tab').forEach((t, i) => t.classList.toggle('active', i === idx));
+  document.querySelectorAll('.set-tab').forEach((t, i) => {
+    t.classList.toggle('active', i === idx);
+    // เปลี่ยนข้อความ Tab สำหรับสลับระหว่าง Desktop / Mobile ถ้าจำเป็น
+    if(idx === i && window.innerWidth <= 640 && i !== 2) {
+      t.innerHTML = `SET ${i+1}`; 
+    } else if (i !== 2) {
+      t.innerHTML = `SET<br class="desktop-br"> ${i+1}`;
+    }
+  });
   document.getElementById('search-input').value = '';
   renderList();
 }
 
-// ─── Toggle all ───────────────────────────────────────────────
 function toggleAll(checked) {
   SETS[currentSet].items.forEach(item => {
     const key = `${currentSet}:${item.name}`;
@@ -1003,7 +652,6 @@ function toggleAll(checked) {
   renderList();
 }
 
-// ─── Submit ───────────────────────────────────────────────────
 document.getElementById('main-form').addEventListener('submit', () => {
   document.getElementById('loading').classList.add('show');
   setTimeout(() => {
@@ -1011,8 +659,19 @@ document.getElementById('main-form').addEventListener('submit', () => {
   }, 4000);
 });
 
-// ─── Init ─────────────────────────────────────────────────────
 renderList();
+
+// ซ่อน <br> ในหน้ามือถือสำหรับตัวหนังสือ Tab
+window.addEventListener('resize', () => {
+  document.querySelectorAll('.desktop-br').forEach(br => {
+    br.style.display = window.innerWidth <= 640 ? 'none' : 'block';
+  });
+});
+// รันเช็คครั้งแรก
+if (window.innerWidth <= 640) {
+  document.querySelectorAll('.desktop-br').forEach(br => br.style.display = 'none');
+}
+
 </script>
 </body>
 </html>
