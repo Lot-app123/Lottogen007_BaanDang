@@ -438,11 +438,15 @@ const SETS = [
   {
     label: 'SET 1',
     items: [
+      { name: 'ดาวโจนส์',            time: '04:00' },
+      { name: 'ดาวโจนส์ VIP',        time: '04:00' },
+      { name: 'ดาวโจนส์ STAR',       time: '04:30' },
       { name: 'ลาว EXTRA',          time: '08:25' },
       { name: 'นิเคอิเช้า VIP',      time: '09:00' },
       { name: 'ฮานอยอาเซียน',        time: '09:10' },
       { name: 'นิเคอิเช้า',          time: '09:25' },
       { name: 'จีนเช้า VIP',         time: '10:00' },
+      { name: 'ไทยเช้า',         time: '10:00' },
       { name: 'จีนเช้า',             time: '10:20' },
       { name: 'ลาว TV',              time: '10:25' },
       { name: 'ฮั่งเส็งเช้า VIP',    time: '10:30' },
@@ -452,6 +456,7 @@ const SETS = [
       { name: 'ลาวพิเศษรอบเที่ยง',   time: '11:30' },
       { name: 'ไต้หวัน',             time: '12:00' },
       { name: 'ฮานอยสตาร์',          time: '12:30' },
+      { name: 'ไทยเที่ยง',          time: '12:30' },
       { name: 'เกาหลี VIP',          time: '12:30' },
       { name: 'เกาหลี',              time: '13:00' },
       { name: 'นิเคอิบ่าย',          time: '13:30' },
@@ -459,6 +464,7 @@ const SETS = [
       { name: 'ลาว HD',              time: '14:00' },
       { name: 'จีนบ่าย',             time: '14:00' },
       { name: 'ฮานอย TV',            time: '14:30' },
+      { name: 'ไทยบ่าย',            time: '14:30' },
       { name: 'จีนบ่าย VIP',         time: '14:45' },
       { name: 'ฮั่งเส็งบ่าย',        time: '15:00' },
       { name: 'ฮั่งเส็งบ่าย VIP',    time: '15:00' },
@@ -468,6 +474,7 @@ const SETS = [
       { name: 'ฮานอยกาชาด',          time: '16:00' },
       { name: 'สิงคโปร์ VIP',        time: '16:30' },
       { name: 'ฮานอยพิเศษ',          time: '16:30' },
+      { name: 'ไทยเย็น',          time: '16:30' },
       { name: 'ฮานอยสามัคคี',        time: '17:00' },
       { name: 'อินเดีย',             time: '17:00' },
       { name: 'ฮานอยปกติ',           time: '18:00' },
@@ -489,10 +496,7 @@ const SETS = [
       { name: 'เยอรมัน',             time: '23:00' },
       { name: 'ลาวกาชาด',            time: '23:00' },
       { name: 'ยูโร',                time: '23:30' },
-      { name: 'รัสเซีย VIP',         time: '23:30' },
-      { name: 'ดาวโจนส์',            time: '04:00' },
-      { name: 'ดาวโจนส์ VIP',        time: '04:00' },
-      { name: 'ดาวโจนส์ STAR',       time: '04:30' },
+      { name: 'รัสเซีย VIP',         time: '23:30' }
     ]
   },
   {
@@ -603,7 +607,7 @@ function renderList() {
     row.className = 'lottery-row' + (isChecked ? ' checked' : '');
     row.innerHTML = `
       <div class="cb-wrap">
-        <input type="checkbox" name="lottery_type" value="${item.name}"${isChecked ? ' checked' : ''}>
+        <input type="checkbox" name="lottery_type" value="${item.time}|${item.name}"${isChecked ? ' checked' : ''}>
         <div class="cb-box">
           <svg width="9" height="7" viewBox="0 0 10 8" fill="none">
             <path d="M1 4l3 3 5-6" stroke="#0a0b0f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
