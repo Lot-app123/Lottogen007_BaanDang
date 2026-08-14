@@ -251,7 +251,7 @@ async def lottery_generate(
             if main2 and main2 in p: valid = True
             
             if not valid:
-                raise HTTPException(status_code=400, detail=f"เลขคู่ชุดที่ {i} ({p}) ต้องมีเลข วิ่ง หรือ รูด อย่างน้อย 1 ตัว")
+                raise HTTPException(status_code=400, detail=f"เลขเจาะชุดที่ {i} ({p}) ต้องมีเลข วิ่ง หรือ รูด อย่างน้อย 1 ตัว")
     
     if win_num and len(win_num) == 6:
         if not main1 or not main2:
